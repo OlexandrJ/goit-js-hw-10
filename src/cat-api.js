@@ -50,9 +50,9 @@ export function fetchCatByBreed(breedId) {
   return axios
     .get(`https://api.thecatapi.com/v1/images/search?breed_ids=${breedId}`)
     .then((response) => {
-
       loaderElement.style.display = "none";
-      
+
+      if (response.data && response.data.length > 0) {
       const catData = response.data[0];
       const catBreed = catData.breeds[0];
       
@@ -63,6 +63,9 @@ export function fetchCatByBreed(breedId) {
         <p><strong>Temperament:</strong> ${catBreed.temperament}</p>
       `;
       catInfoElement.innerHTML = catInfoHTML;
+} else {
+        catInfoElement.innerHTML = "Oops! Something went wrong! Try reloading the page!";
+      }
     })
     .catch((error) => {
       loaderElement.style.display = "none";
