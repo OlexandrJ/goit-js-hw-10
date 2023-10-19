@@ -6,14 +6,19 @@ export function fetchBreeds() {
   const selectElement = document.querySelector(".breed-select");
   const loaderElement = document.querySelector(".loader");
   const errorElement = document.querySelector(".error");
+  const catInfoElement = document.querySelector(".cat-info");
 
+  selectElement.style.display = "none";
   loaderElement.style.display = "block";
+  errorElement.style.display = "none";
+  catInfoElement.innerHTML = "";
 
   return axios
     .get("https://api.thecatapi.com/v1/breeds")
     .then((response) => {
+      selectElement.style.display = "block";
       loaderElement.style.display = "none";
-
+      
       const breeds = response.data;
       breeds.forEach((breed) => {
         const option = document.createElement("option");
@@ -25,8 +30,10 @@ export function fetchBreeds() {
       return breeds;
     })
     .catch((error) => {
+      selectElement.style.display = "none";
       loaderElement.style.display = "none";
       errorElement.style.display = "block";
+      catInfoElement.innerHTML = "";
       throw error;
     });
 }
@@ -37,6 +44,8 @@ export function fetchCatByBreed(breedId) {
   const errorElement = document.querySelector(".error");
 
   loaderElement.style.display = "block";
+  errorElement.style.display = "none";
+  catInfoElement.innerHTML = "";
 
   return axios
     .get(`https://api.thecatapi.com/v1/images/search?breed_ids=${breedId}`)
@@ -58,6 +67,7 @@ export function fetchCatByBreed(breedId) {
     .catch((error) => {
       loaderElement.style.display = "none";
       errorElement.style.display = "block";
+      catInfoElement.innerHTML = "";
       throw error;
     });
 }
